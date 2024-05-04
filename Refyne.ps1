@@ -732,7 +732,7 @@ function Set-BCDTweaks {
 
     PROCESS {
         Write-StatusLine Info "Applying tweaks to Boot Configuration Device..."
-        Read-CommandStatus 'bcdedit /set useplatformtick yes' "enable usage of platform ticks"
+        Read-CommandStatus 'bcdedit /set useplatformtick no' "disable usage of platform ticks"
         Read-CommandStatus 'bcdedit /set disabledynamictick yes' "disable dynamic platform ticks"
         Read-CommandStatus 'bcdedit /set useplatformclock no' "disable use of platform clock-source"
         Read-CommandStatus 'bcdedit /set usefirmwarepcisettings no' "disable BIOS PCI device mapping"
@@ -792,7 +792,7 @@ function Set-Tweaks {
         Write-RegistryKey "HKLM:\System\CurrentControlSet\Control\Session Manager\kernel" "GlobalTimerResolutionRequests" "DWord" "1"
         Write-RegistryKey "HKLM:\System\CurrentControlSet\Control\Session Manager\Power" "HiberbootEnabled" "DWord" "0"
         Write-RegistryKey "HKLM:\System\CurrentControlSet\Control\Session Manager" "HeapDeCommitFreeBlockThreshold" "DWord" "262144"
-        Write-RegistryKey "HKLM:\System\CurrentControlSet\Control\FileSystem\" "LongPathsEnabled" "DWord" "0"
+        Write-RegistryKey "HKLM:\System\CurrentControlSet\Control\FileSystem\" "LongPathsEnabled" "DWord" "1"
         Write-RegistryKey "HKLM:\System\CurrentControlSet\Control\GraphicsDrivers\Scheduler" "EnablePreemption" "DWord" "1"
         Write-RegistryKey "HKLM:\System\CurrentControlSet\Control\GraphicsDrivers" "PlatformSupportMiracast" "DWord" "0"
         Write-RegistryKey "HKLM:\System\CurrentControlSet\Control\Power\PowerThrottling" "PowerThrottlingOff" "DWord" "00000001"
@@ -1119,8 +1119,8 @@ function Set-NetworkTweaks {
             Read-CommandStatus "netsh int tcp set supplemental Template=InternetCustom CongestionProvider=NewReno" "Enabled New-Reno for custom general traffic"
         }
         # Forcing DNS to Cloudflare's, generally faster and more secure compared to ISP's DNS - overridable by user
-        Set-DnsClientServerAddress -InterfaceAlias $adapterName -ServerAddresses ("1.1.1.1", "1.0.0.1")
-        Set-DnsClientServerAddress -InterfaceAlias $adapterName -ServerAddresses ("2606:4700:4700::1111", "2606:4700:4700::1001")
+        # Set-DnsClientServerAddress -InterfaceAlias $adapterName -ServerAddresses ("1.1.1.1", "1.0.0.1")
+        # Set-DnsClientServerAddress -InterfaceAlias $adapterName -ServerAddresses ("2606:4700:4700::1111", "2606:4700:4700::1001")
     }
 
     END {
